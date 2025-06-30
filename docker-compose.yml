@@ -1,11 +1,28 @@
-
 services:
+  # 'server' 서비스 정의
   server:
-    # ###
-    # 다음 주석을 지우고 compose 를 완성하자
-    # ###
+    # 빌드 컨텍스트 및 Dockerfile 위치
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    # 컨테이너 이름
+    container_name: fastapi-server
+    # 포트 매핑 (호스트:컨테이너)
+    ports:
+      - "8000:8000"
+    # 재시작 정책: 항상 재시작 (오류 발생 시)
+    restart: always
+
 
   client:
-    # ###
-    # 다음 주석을 지우고 compose 를 완성하자
-    # ###
+    # 빌드 컨텍스트 및 Dockerfile 위치
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    # 컨테이너 이름
+    container_name: python-client
+    # 재시작 정책
+    restart: always
+    # 서버가 먼저 실행되도록 의존성 설정
+    depends_on:
+      - server
